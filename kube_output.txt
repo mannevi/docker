@@ -1,0 +1,4 @@
+NAME                        READY   STATUS             RESTARTS   AGE
+text-processing-job-c26w6   0/1     ImagePullBackOff   0          7m43s
+text-processing-job-llvmm   0/1     ImagePullBackOff   0          7m43s
+text-processing-job-srjmw   0/1     ImagePullBackOff   0          7m43s

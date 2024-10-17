@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: text-processing-job
+spec:
+  parallelism: 3  # Number of parallel pods
+  completions: 3  # Total completions required
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+      - name: text-processing-container
+        image: mannevi/text-processing-container:latest
+      restartPolicy: Never
