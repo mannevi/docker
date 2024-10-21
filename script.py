@@ -1,58 +1,67 @@
 import os
 from collections import Counter
-import re
 import socket
+import re
 
-def read_file(filepath):
-    with open(filepath, 'r', encoding='utf-8') as file:
-        return file.read()
+# Function to count words in a text file
+def count_words(filepath):
+    with open(filepath, 'r') as file:
+        text = file.read().lower()
+    # Keep contractions intact, and remove special characters
+    text = re.sub(r"[^a-zA-Z0-9'\s]", "", text)
+    words = text.split()
+    word_count = len(words)
+    return words, word_count
 
-def count_words(text):
-    # Use regex to split words and handle contractions
-    words = re.findall(r"\b\w+(?:'\w+)?\b", text.lower())
-    return Counter(words)
+# Function to get the top 3 most frequent words
+def get_top_frequent_words(words, top_n=3):
+    word_freq = Counter(words)
+    return word_freq.most_common(top_n)
 
-def process_text_files():
-    # File paths
-    file1 = '/home/data/IF.txt'
-    file2 = '/home/data/AlwaysRememberUsThisWay.txt'
+# Function to get the IP address of the machine running the container
+def get_ip_address():
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+    return ip_address
 
-    # Read files
-    text1 = read_file(file1)
-    text2 = read_file(file2)
+# Paths for text files
+file1_path = '/home/data/IF.txt'
+file2_path = '/home/data/AlwaysRememberUsThisWay.txt'
 
-    # Count words
-    word_count_1 = count_words(text1)
-    word_count_2 = count_words(text2)
+# Count words in both files
+words_file1, count_file1 = count_words(file1_path)
+words_file2, count_file2 = count_words(file2_path)
 
-    # Total words
-    total_words_1 = sum(word_count_1.values())
-    total_words_2 = sum(word_count_2.values())
-    grand_total_words = total_words_1 + total_words_2
+# Grand total word count
+grand_total = count_file1 + count_file2
 
-    # Top 3 words in IF.txt
-    top_3_if = word_count_1.most_common(3)
+# Get top 3 frequent words in each file
+top_words_file1 = get_top_frequent_words(words_file1)
+top_words_file2 = get_top_frequent_words(words_file2)
 
-    # Top 3 words in AlwaysRememberUsThisWay.txt
-    top_3_arutw = word_count_2.most_common(3)
+# Get IP address of the machine
+ip_address = get_ip_address()
 
-    # Get container's IP address
-    ip_address = socket.gethostbyname(socket.gethostname())
+# Write results to result.txt
+output_dir = '/home/data/output'
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
-    # Write results to result.txt
-    output_path = '/home/data/output/result.txt'
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, 'w') as result_file:
-        result_file.write(f'Total words in IF.txt: {total_words_1}\n')
-        result_file.write(f'Total words in AlwaysRememberUsThisWay.txt: {total_words_2}\n')
-        result_file.write(f'Grand total of words: {grand_total_words}\n')
-        result_file.write(f'Top 3 words in IF.txt: {top_3_if}\n')
-        result_file.write(f'Top 3 words in AlwaysRememberUsThisWay.txt: {top_3_arutw}\n')
-        result_file.write(f'Container IP Address: {ip_address}\n')
+with open(os.path.join(output_dir, 'result.txt'), 'w') as result_file:
+    result_file.write(f"Word count for IF.txt: {count_file1}\n")
+    result_file.write(f"Word count for AlwaysRememberUsThisWay.txt: {count_file2}\n")
+    result_file.write(f"Grand total word count: {grand_total}\n\n")
+    
+    result_file.write("Top 3 frequent words in IF.txt:\n")
+    for word, freq in top_words_file1:
+        result_file.write(f"{word}: {freq}\n")
+    
+    result_file.write("\nTop 3 frequent words in AlwaysRememberUsThisWay.txt:\n")
+    for word, freq in top_words_file2:
+        result_file.write(f"{word}: {freq}\n")
+    
+    result_file.write(f"\nIP Address of the machine: {ip_address}\n")
 
-    # Print the results to the console
-    with open(output_path, 'r') as result_file:
-        print(result_file.read())
-
-if __name__ == "__main__":
-    process_text_files()
+# Print the result file content to the console
+with open(os.path.join(output_dir, 'result.txt'), 'r') as result_file:
+    print(result_file.read())
