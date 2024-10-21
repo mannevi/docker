@@ -1,4 +1,4 @@
-NAME                        READY   STATUS             RESTARTS   AGE
-text-processing-job-c26w6   0/1     ImagePullBackOff   0          7m43s
-text-processing-job-llvmm   0/1     ImagePullBackOff   0          7m43s
-text-processing-job-srjmw   0/1     ImagePullBackOff   0          7m43s
+NAME                                   READY   STATUS             RESTARTS      AGE
+mydockerimage-7bkgj                    0/1     Completed          0             7m53s
+mydockerimage-7tnd7                    0/1     Completed          0             7m53s
+mydockerimage-z9z49                    0/1     Completed          0             7m53s
