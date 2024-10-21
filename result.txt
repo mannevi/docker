@@ -1,0 +1,15 @@
+Word count for IF.txt: 287
+Word count for AlwaysRememberUsThisWay.txt: 223
+Grand total word count: 510
+
+Top 3 frequent words in IF.txt:
+you: 18
+and: 16
+if: 14
+
+Top 3 frequent words in AlwaysRememberUsThisWay.txt:
+the: 13
+and: 8
+i: 8
+
+IP Address of the machine: 172.17.0.2
